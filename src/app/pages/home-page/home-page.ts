@@ -16,7 +16,7 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     private heroService: HeroService,
-    private cdr: ChangeDetectorRef, // Inyectado para forzar la vista
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 

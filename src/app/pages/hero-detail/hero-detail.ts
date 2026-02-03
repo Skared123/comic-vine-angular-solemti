@@ -17,7 +17,7 @@ export class HeroDetail implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
-    private cdr: ChangeDetectorRef, // 2. Inyectalo aquí
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
@@ -34,10 +34,9 @@ export class HeroDetail implements OnInit {
     this.loading = true;
     this.heroService.getHeroById(id).subscribe({
       next: (res) => {
-        // 3. Forzamos la actualización
         this.hero = res;
         this.loading = false;
-        this.cdr.detectChanges(); // <--- ESTO ES LA CLAVE
+        this.cdr.detectChanges();
         console.log('Detalle del héroe cargado');
       },
       error: (err) => {
