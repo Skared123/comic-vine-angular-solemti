@@ -2,11 +2,7 @@
   "rewrites": [
     {
       "source": "/api-cv/api/:path*",
-      "destination": "https://comicvine.gamespot.com/api/:path*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "https://comic-vine.com/api/:path*"
     }
   ]
 }
