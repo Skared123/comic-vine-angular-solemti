@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api-cv/:path*",
-      "destination": "https://comic-vine.com/api/:path*"
+      "destination": "https://comic-vine.com/api/:path*/"
     }
   ]
 }
