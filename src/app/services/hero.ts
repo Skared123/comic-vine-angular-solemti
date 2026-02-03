@@ -16,7 +16,6 @@ export class HeroService {
   constructor(private http: HttpClient) {}
 
   getHeroes(): Observable<any[]> {
-    // Si ya tenemos héroes, los devolvemos de inmediato sin ir a la API
     if (this.heroesCache.length > 0) {
       return of(this.heroesCache);
     }
@@ -37,6 +36,11 @@ export class HeroService {
       }),
       catchError(this.handleError),
     );
+  }
+
+  getHeroById(id: string): Observable<any> {
+    const url = `${this.baseUrl}character/4005-${id}/?api_key=${this.key}&format=json`;
+    return this.http.get<any>(url).pipe(map((res) => res.results));
   }
 
   private handleError(error: any) {
