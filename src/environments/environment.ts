@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   apiKey: '',
-  apiUrl: '/api-cv',
+  apiUrl: '/api-cv/',
 };
