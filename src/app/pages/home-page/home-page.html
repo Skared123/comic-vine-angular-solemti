@@ -1,70 +1,35 @@
 <main class="flex-grow p-8 max-w-7xl mx-auto w-full">
   <header class="flex justify-between items-end mb-10">
     <div>
-      <h1 class="text-4xl font-extrabold mb-2">Lista de Super Héroes</h1>
+      <h1 class="text-4xl font-extrabold mb-2 text-white">Lista de Super Héroes</h1>
       <p style="color: #a1a1aa">Descubre detalles de los super héroes del universo Marvel.</p>
     </div>
   </header>
 
   <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-    <div
-      class="rounded-xl overflow-hidden cursor-pointer group transition-all duration-300 hover:-translate-y-2"
-      style="background-color: #1a1a1a"
-    >
-      <div class="relative h-72">
-        <span
-          class="absolute top-3 right-3 text-[10px] font-bold px-2 py-1 rounded z-10"
-          style="background-color: #e62429"
-          >534 COMICS</span
+    @if (loading) {
+      @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
+        <div class="rounded-xl overflow-hidden animate-pulse" style="background-color: #1a1a1a">
+          <div class="h-72 bg-zinc-800/50"></div>
+          <div class="p-5 space-y-2">
+            <div class="h-4 bg-zinc-800 rounded w-3/4"></div>
+            <div class="h-3 bg-zinc-800 rounded w-1/2"></div>
+          </div>
+        </div>
+      }
+    } @else {
+      @for (hero of heroes; track hero.id) {
+        <app-hero-card
+          [hero]="hero"
+          [routerLink]="['/hero', hero.id]"
+          class="cursor-pointer transition-transform hover:scale-105"
         >
-        <img
-          src="https://images.alphacoders.com/936/936166.jpg"
-          alt="Spider-Man"
-          class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all"
-        />
-      </div>
-      <div class="p-5 border-t border-zinc-800">
-        <h3 class="font-bold text-lg">Spider-Man</h3>
-        <p class="text-sm" style="color: #a1a1aa">Peter Parker</p>
-      </div>
-    </div>
-
-    <div
-      class="rounded-xl overflow-hidden cursor-pointer group transition-all duration-300 hover:-translate-y-2"
-      style="background-color: #1a1a1a"
-    >
-      <div class="relative h-72">
-        <span
-          class="absolute top-3 right-3 text-[10px] font-bold px-2 py-1 rounded z-10"
-          style="background-color: #e62429"
-          >534 COMICS</span
-        >
-        <img
-          src="https://images.alphacoders.com/936/936166.jpg"
-          alt="Spider-Man"
-          class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all"
-        />
-      </div>
-      <div class="p-5 border-t border-zinc-800">
-        <h3 class="font-bold text-lg">Spider-Man</h3>
-        <p class="text-sm" style="color: #a1a1aa">Peter Parker</p>
-      </div>
-    </div>
-
-    <div class="rounded-xl overflow-hidden animate-pulse" style="background-color: #1a1a1a">
-      <div class="h-72 bg-zinc-800/50"></div>
-      <div class="p-5 space-y-2">
-        <div class="h-4 bg-zinc-800 rounded w-3/4"></div>
-        <div class="h-3 bg-zinc-800 rounded w-1/2"></div>
-      </div>
-    </div>
-
-    <div class="rounded-xl overflow-hidden animate-pulse" style="background-color: #1a1a1a">
-      <div class="h-72 bg-zinc-800/50"></div>
-      <div class="p-5 space-y-2">
-        <div class="h-4 bg-zinc-800 rounded w-3/4"></div>
-        <div class="h-3 bg-zinc-800 rounded w-1/2"></div>
-      </div>
-    </div>
+        </app-hero-card>
+      } @empty {
+        <div class="col-span-full text-center py-10">
+          <p class="text-zinc-500 text-xl">No se encontraron héroes.</p>
+        </div>
+      }
+    }
   </section>
 </main>

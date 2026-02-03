@@ -1,0 +1,22 @@
+<div
+  class="rounded-xl overflow-hidden cursor-pointer group transition-all duration-300 hover:-translate-y-2"
+  style="background-color: #1a1a1a"
+>
+  <div class="relative h-72">
+    <span
+      class="absolute top-3 right-3 text-[10px] font-bold px-2 py-1 rounded z-10"
+      style="background-color: #e62429"
+    >
+      {{ hero?.comicsCount }} COMICS
+    </span>
+    <img
+      [src]="hero?.thumbnail"
+      [alt]="hero?.name"
+      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all"
+    />
+  </div>
+  <div class="p-5 border-t border-zinc-800">
+    <h3 class="font-bold text-lg">{{ hero?.name }}</h3>
+    <p class="text-sm" style="color: #a1a1aa">{{ hero.realName }}</p>
+  </div>
+</div>
