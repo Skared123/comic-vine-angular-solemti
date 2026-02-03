@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HeroService } from '../../services/hero';
 import { HeroCardComponent } from '../../components/hero-card/hero-card';
@@ -16,21 +16,30 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     private heroService: HeroService,
+    private cdr: ChangeDetectorRef, // Inyectado para forzar la vista
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.heroService.getHeroes().subscribe({
-        next: (res) => {
-          this.heroes = res;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.loading = false;
-          console.error(err);
-        },
-      });
+      this.loadHeroes();
     }
+  }
+
+  loadHeroes(): void {
+    this.loading = true;
+    this.heroService.getHeroes().subscribe({
+      next: (res) => {
+        this.heroes = [...res];
+        this.loading = false;
+        this.cdr.detectChanges();
+        console.log('Héroes en pantalla:', this.heroes.length);
+      },
+      error: (err) => {
+        console.error(err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
   }
 }
