@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { map, catchError, delay } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -10,18 +10,25 @@ import { environment } from '../../environments/environment';
 export class HeroService {
   private baseUrl = environment.apiUrl;
   private key = environment.apiKey;
-
   private heroesCache: any[] = [];
 
   constructor(private http: HttpClient) {}
 
+  // 1. Obtener lista de héroes
   getHeroes(): Observable<any[]> {
     if (this.heroesCache.length > 0) {
       return of(this.heroesCache);
     }
 
-    const url = `${this.baseUrl}characters/?api_key=${this.key}&format=json&limit=20`;
-    return this.http.get<any>(url).pipe(
+    const params = new HttpParams()
+      .set('api_key', this.key)
+      .set('format', 'json')
+      .set('limit', '20');
+
+    const url = `${this.baseUrl}/characters/`;
+    console.log('Llamando a lista:', url);
+
+    return this.http.get<any>(url, { params }).pipe(
       map((res) => {
         const mappedHeroes = res.results.map((hero: any) => ({
           id: hero.id,
@@ -34,25 +41,27 @@ export class HeroService {
         this.heroesCache = mappedHeroes;
         return mappedHeroes;
       }),
-      catchError(this.handleError),
+      catchError((err) => {
+        console.error('Error en servicio (getHeroes):', err);
+        return throwError(() => new Error('Error de conexión'));
+      }),
     );
   }
 
+  // 2. OBTENER UN HÉROE POR ID (Esta es la que te faltaba y daba error en la terminal)
   getHeroById(id: string): Observable<any> {
-    const url = `${this.baseUrl}character/4005-${id}/?api_key=${this.key}&format=json`;
-    return this.http.get<any>(url).pipe(map((res) => res.results));
-  }
+    const params = new HttpParams().set('api_key', this.key).set('format', 'json');
 
-  private handleError(error: any) {
-    console.error('Error detectado en la petición:', error);
-    let errorMessage = 'Ocurrió un error desconocido';
+    // Comic Vine usa el prefijo 4005- para personajes
+    const url = `${this.baseUrl}/character/4005-${id}/`;
+    console.log('Llamando a detalle:', url);
 
-    if (error.status === 0) {
-      errorMessage = 'No hay conexión con el servidor (posible error de CORS)';
-    } else if (error.status === 401) {
-      errorMessage = 'API Key inválida';
-    }
-
-    return throwError(() => new Error(errorMessage));
+    return this.http.get<any>(url, { params }).pipe(
+      map((res) => res.results),
+      catchError((err) => {
+        console.error('Error en servicio (getHeroById):', err);
+        return throwError(() => new Error('Error al obtener detalle del héroe'));
+      }),
+    );
   }
 }
