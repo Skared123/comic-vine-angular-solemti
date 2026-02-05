@@ -1,11 +1,11 @@
 {
-  "/api-cv": {
+  "/api": {
     "target": "https://comicvine.gamespot.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",
     "pathRewrite": {
-      "^/api-cv": ""
+      "^/api": ""
     }
   }
 }
