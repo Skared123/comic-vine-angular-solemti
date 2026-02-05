@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/api-cv/:path*",
+      "source": "/api/:path*",
       "destination": "https://comicvine.gamespot.com/api/:path*/"
     }
   ]
