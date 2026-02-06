@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -9,7 +9,6 @@ import { environment } from '../../environments/environment';
 })
 export class HeroService {
   private baseUrl = environment.apiUrl;
-  private key = environment.apiKey;
   private heroesCache: any[] = [];
 
   constructor(private http: HttpClient) {}
@@ -19,17 +18,9 @@ export class HeroService {
       return of(this.heroesCache);
     }
 
-    const params = new HttpParams()
-      .set('api_key', this.key)
-      .set('format', 'json')
-      .set('limit', '20');
+    const url = `${this.baseUrl}/characters`;
 
-    const url = `${this.baseUrl}/characters/`;
-    console.log('Llamando a lista:', url);
-
-    const headers = { 'User-Agent': 'AngularComicApp' };
-
-    return this.http.get<any>(url, { params, headers }).pipe(
+    return this.http.get<any>(url).pipe(
       map((res) => {
         const mappedHeroes = res.results.map((hero: any) => ({
           id: hero.id,
@@ -43,24 +34,17 @@ export class HeroService {
         return mappedHeroes;
       }),
       catchError((err) => {
-        console.error('Error en servicio (getHeroes):', err);
         return throwError(() => new Error('Error de conexión'));
       }),
     );
   }
 
   getHeroById(id: string): Observable<any> {
-    const params = new HttpParams().set('api_key', this.key).set('format', 'json');
+    const url = `${this.baseUrl}/character/${id}`;
 
-    const url = `${this.baseUrl}/character/4005-${id}/`;
-    console.log('Llamando a detalle:', url);
-
-    const headers = { 'User-Agent': 'AngularComicApp' };
-
-    return this.http.get<any>(url, { params, headers }).pipe(
+    return this.http.get<any>(url).pipe(
       map((res) => res.results),
       catchError((err) => {
-        console.error('Error en servicio (getHeroById):', err);
         return throwError(() => new Error('Error al obtener detalle del héroe'));
       }),
     );
