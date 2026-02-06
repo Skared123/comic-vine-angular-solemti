@@ -27,7 +27,9 @@ export class HeroService {
     const url = `${this.baseUrl}/characters/`;
     console.log('Llamando a lista:', url);
 
-    return this.http.get<any>(url, { params }).pipe(
+    const headers = { 'User-Agent': 'AngularComicApp' };
+
+    return this.http.get<any>(url, { params, headers }).pipe(
       map((res) => {
         const mappedHeroes = res.results.map((hero: any) => ({
           id: hero.id,
@@ -53,7 +55,9 @@ export class HeroService {
     const url = `${this.baseUrl}/character/4005-${id}/`;
     console.log('Llamando a detalle:', url);
 
-    return this.http.get<any>(url, { params }).pipe(
+    const headers = { 'User-Agent': 'AngularComicApp' };
+
+    return this.http.get<any>(url, { params, headers }).pipe(
       map((res) => res.results),
       catchError((err) => {
         console.error('Error en servicio (getHeroById):', err);
