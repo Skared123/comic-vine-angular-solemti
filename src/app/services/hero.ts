@@ -14,7 +14,6 @@ export class HeroService {
 
   constructor(private http: HttpClient) {}
 
-  // 1. Obtener lista de héroes
   getHeroes(): Observable<any[]> {
     if (this.heroesCache.length > 0) {
       return of(this.heroesCache);
@@ -48,11 +47,9 @@ export class HeroService {
     );
   }
 
-  // 2. OBTENER UN HÉROE POR ID (Esta es la que te faltaba y daba error en la terminal)
   getHeroById(id: string): Observable<any> {
     const params = new HttpParams().set('api_key', this.key).set('format', 'json');
 
-    // Comic Vine usa el prefijo 4005- para personajes
     const url = `${this.baseUrl}/character/4005-${id}/`;
     console.log('Llamando a detalle:', url);
 
